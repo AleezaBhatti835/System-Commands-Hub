@@ -22,5 +22,29 @@
         "problem": "I committed too early or made a mistake.",
         "command": "git reset --soft HEAD~1",
         "tags": "git github version control undo"
+    },
+    {
+        "id": 4,
+        "os": "Laravel",
+        "title": "Clear All Caches",
+        "problem": "Code changes or new environment variables aren't showing up in the browser.",
+        "command": "php artisan optimize:clear",
+        "tags": "php laravel backend cache clear environment"
+    },
+    {
+        "id": 5,
+        "os": "React / Vite",
+        "title": "Build for Production",
+        "problem": "Ready to deploy the website, need the optimized files.",
+        "command": "npm run build",
+        "tags": "react vite frontend deploy build"
+    },
+    {
+        "id": 6,
+        "os": "Security Tools",
+        "title": "Start SonarQube Server",
+        "problem": "Need to run static code analysis locally via Docker.",
+        "command": "docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest",
+        "tags": "security analysis static sonarqube docker"
     }
 ]
