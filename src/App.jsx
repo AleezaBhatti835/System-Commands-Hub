@@ -5,28 +5,26 @@ import './index.css';
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [copiedId, setCopiedId] = useState(null);
-
-  // NEW: State to track which category tab is currently active
   const [activeTab, setActiveTab] = useState("All");
 
-  // NEW: Automatically extract unique categories from your data!
-  // The 'Set' object in JavaScript automatically removes duplicates.
+  // NEW: State to toggle the tag cloud visibility (open/closed)
+  const [showTags, setShowTags] = useState(false);
+
   const categories = ["All", ...new Set(data.map((item) => item.os))];
 
-  // UPDATED: Filter by BOTH the search term AND the active category tab
+  // NEW: Extract all unique tags, split them by space, remove duplicates, and sort alphabetically
+  const allTags = [...new Set(
+    data.flatMap(item => item.tags.toLowerCase().split(" "))
+  )].filter(tag => tag.trim() !== "").sort();
+
   const filteredCommands = data.filter((item) => {
     const searchLower = searchTerm.toLowerCase();
-
-    // 1. Check if it matches the search bar
     const matchesSearch =
       item.title.toLowerCase().includes(searchLower) ||
       item.problem.toLowerCase().includes(searchLower) ||
       item.tags.toLowerCase().includes(searchLower);
 
-    // 2. Check if it matches the clicked category button
     const matchesTab = activeTab === "All" || item.os === activeTab;
-
-    // It must match BOTH to show up on the screen
     return matchesSearch && matchesTab;
   });
 
@@ -57,23 +55,50 @@ function App() {
           />
         </div>
 
-        {/* NEW: The Category Filter Buttons */}
-        <div className="flex flex-wrap gap-3 mb-10">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveTab(category)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${activeTab === category
-                  ? "bg-emerald-500 text-black border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]"
-                  : "bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-500 hover:text-white"
-                }`}
-            >
-              {category}
-            </button>
-          ))}
+        {/* Categories and "View Tags" Toggle Button */}
+        <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
+          <div className="flex flex-wrap gap-3">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setActiveTab(category)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${activeTab === category
+                    ? "bg-emerald-500 text-black border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                    : "bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-500 hover:text-white"
+                  }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setShowTags(!showTags)}
+            className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors whitespace-nowrap pt-2"
+          >
+            {showTags ? "Hide Tags ▲" : "View All Tags ▼"}
+          </button>
         </div>
 
-        <div className="flex flex-col gap-6">
+        {/* NEW: The Expandable Tag Cloud */}
+        {showTags && (
+          <div className="mb-8 p-5 bg-slate-800/50 rounded-xl border border-slate-700 flex flex-wrap gap-2 animate-fade-in">
+            {allTags.map(tag => (
+              <button
+                key={tag}
+                onClick={() => {
+                  setSearchTerm(tag); // Auto-fill search bar
+                  setShowTags(false); // Close the tag cloud
+                }}
+                className="text-xs bg-slate-900 text-slate-400 px-3 py-1.5 rounded-md hover:text-emerald-400 hover:border-emerald-400 border border-slate-700 transition-colors"
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-6 mt-6">
           {filteredCommands.map((item) => (
             <div key={item.id} className="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-lg hover:border-slate-500 transition-colors">
               <div className="flex justify-between items-start mb-3">
@@ -102,7 +127,6 @@ function App() {
                     {copiedId === item.id ? '✓ Copied!' : 'Copy'}
                   </button>
                 </div>
-
               </div>
             </div>
           ))}
