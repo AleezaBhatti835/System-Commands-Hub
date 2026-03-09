@@ -41,7 +41,7 @@ function App() {
       <div className="max-w-3xl mx-auto">
 
         <header className="mb-12 text-center mt-8">
-          <h1 className="text-4xl font-bold text-emerald-400 mb-3 tracking-tight">System Commands Hub 💻</h1>
+          <h1 className="text-4xl font-bold text-emerald-400 mb-3 tracking-tight">System Quickfix Commands 💻</h1>
           <p className="text-slate-400 text-lg">Search for standard settings and terminal commands.</p>
         </header>
 
@@ -63,8 +63,8 @@ function App() {
                 key={category}
                 onClick={() => setActiveTab(category)}
                 className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${activeTab === category
-                    ? "bg-emerald-500 text-black border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]"
-                    : "bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-500 hover:text-white"
+                  ? "bg-emerald-500 text-black border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                  : "bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-500 hover:text-white"
                   }`}
               >
                 {category}
@@ -120,8 +120,8 @@ function App() {
                   <button
                     onClick={() => handleCopy(item.id, item.command)}
                     className={`px-4 py-2 mr-2 rounded font-semibold text-sm transition-all whitespace-nowrap ${copiedId === item.id
-                        ? 'bg-emerald-500 text-black'
-                        : 'bg-slate-700 text-white hover:bg-slate-600'
+                      ? 'bg-emerald-500 text-black'
+                      : 'bg-slate-700 text-white hover:bg-slate-600'
                       }`}
                   >
                     {copiedId === item.id ? '✓ Copied!' : 'Copy'}
